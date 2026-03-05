@@ -1,9 +1,16 @@
 [
   {
+    "id": "2026-03-05",
+    "title": "Vue 3: watch, watchEffect и побочные эффекты",
+    "date": "2026-03-05",
+    "path": "/tests/2026-03-05.json",
+    "tags": ["vue", "vue3", "reactivity", "watch", "watcheffect", "side-effects"]
+  },
+  {
     "id": "2026-03-04",
-    "title": "Vue: computed/watch",
+    "title": "Vue 3: computed и watch на практике",
     "date": "2026-03-04",
     "path": "/tests/2026-03-04.json",
-    "tags": ["vue", "ts"]
+    "tags": ["vue", "vue3", "reactivity", "computed", "watch"]
   }
 ]
