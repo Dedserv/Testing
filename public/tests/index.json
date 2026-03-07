@@ -1,5 +1,12 @@
 [
   {
+    "id": "2026-03-07",
+    "title": "Vue 3: День 5 — provide/inject и границы мутабельности",
+    "date": "2026-03-07",
+    "path": "/tests/2026-03-07.json",
+    "tags": ["vue", "vue3", "reactivity", "provide", "inject", "readonly"]
+  },
+  {
     "id": "2026-03-06",
     "title": "Vue 3: День 1 — ref vs reactive",
     "date": "2026-03-06",
