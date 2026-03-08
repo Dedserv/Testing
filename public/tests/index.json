@@ -1,16 +1,43 @@
 [
   {
+    "id": "2026-03-08",
+    "title": "Vue 3: День 6 — диагностика реактивности и performance-анти-паттерны",
+    "date": "2026-03-08",
+    "path": "/tests/2026-03-08.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "watch",
+      "performance",
+      "debugging"
+    ]
+  },
+  {
     "id": "2026-03-07",
     "title": "Vue 3: День 5 — provide/inject и границы мутабельности",
     "date": "2026-03-07",
     "path": "/tests/2026-03-07.json",
-    "tags": ["vue", "vue3", "reactivity", "provide", "inject", "readonly"]
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "provide",
+      "inject",
+      "readonly"
+    ]
   },
   {
     "id": "2026-03-06",
     "title": "Vue 3: День 1 — ref vs reactive",
     "date": "2026-03-06",
     "path": "/tests/2026-03-06.json",
-    "tags": ["vue", "vue3", "reactivity", "ref", "reactive"]
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "ref",
+      "reactive"
+    ]
   }
 ]
