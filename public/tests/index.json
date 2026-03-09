@@ -1,5 +1,19 @@
 [
   {
+    "id": "2026-03-09",
+    "title": "Vue 3: День 7 — Scenario Builder kickoff + закрепление",
+    "date": "2026-03-09",
+    "path": "/tests/2026-03-09.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "scenario-builder",
+      "composables",
+      "architecture"
+    ]
+  },
+  {
     "id": "2026-03-08",
     "title": "Vue 3: День 6 — диагностика реактивности и performance-анти-паттерны",
     "date": "2026-03-08",
