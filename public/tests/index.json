@@ -1,5 +1,19 @@
 [
   {
+    "id": "2026-03-10",
+    "title": "Vue 3: День 8 — watch/watchEffect, cleanup и безопасный async",
+    "date": "2026-03-10",
+    "path": "/tests/2026-03-10.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "watch",
+      "watchEffect",
+      "async"
+    ]
+  },
+  {
     "id": "2026-03-09",
     "title": "Vue 3: День 7 — Scenario Builder kickoff + закрепление",
     "date": "2026-03-09",
