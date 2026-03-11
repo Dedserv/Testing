@@ -1,5 +1,19 @@
 [
   {
+    "id": "2026-03-11",
+    "title": "Vue 3: День 2 — computed и производное состояние без лишних watch",
+    "date": "2026-03-11",
+    "path": "/tests/2026-03-11.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "computed",
+      "watch",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-03-10",
     "title": "Vue 3: День 8 — watch/watchEffect, cleanup и безопасный async",
     "date": "2026-03-10",
