@@ -1,5 +1,19 @@
 [
   {
+    "id": "2026-03-12",
+    "title": "Vue 3: День 4 — реактивность в composables и ловушки деструктуризации",
+    "date": "2026-03-12",
+    "path": "/tests/2026-03-12.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "composables",
+      "toRefs",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-03-11",
     "title": "Vue 3: День 2 — computed и производное состояние без лишних watch",
     "date": "2026-03-11",
