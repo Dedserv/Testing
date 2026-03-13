@@ -1,5 +1,22 @@
 [
   {
+    "id": "2026-03-13",
+    "title": "Vue 3: День 1 (новый цикл) — ref/reactive, computed, watch и watchEffect",
+    "date": "2026-03-13",
+    "path": "/tests/2026-03-13.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "ref",
+      "reactive",
+      "computed",
+      "watch",
+      "watchEffect",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-03-12",
     "title": "Vue 3: День 4 — реактивность в composables и ловушки деструктуризации",
     "date": "2026-03-12",
