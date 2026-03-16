@@ -1,0 +1,163 @@
+{
+  "id": "2026-03-16",
+  "title": "Vue 3: День 4 (новый цикл) — watch vs watchEffect, cleanup и безопасный async",
+  "date": "2026-03-16",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Что в первую очередь отличает watch от watchEffect в Vue 3?",
+      "choices": [
+        { "id": "a", "text": "watch автоматически отслеживает все реактивные зависимости в колбэке" },
+        { "id": "b", "text": "watch требует явный source, а watchEffect трекает зависимости из тела эффекта" },
+        { "id": "c", "text": "watch работает только с ref, watchEffect только с reactive" },
+        { "id": "d", "text": "watchEffect нельзя использовать с async-логикой" }
+      ],
+      "answer": "b",
+      "explain": "watch — явный и точечный контроль источников; watchEffect — авто-трекинг зависимостей во время выполнения эффекта."
+    },
+    {
+      "id": "q2",
+      "prompt": "Почему для производного значения visibleCount из items и filters лучше computed, а не watch?",
+      "choices": [
+        { "id": "a", "text": "watch быстрее computed в любых сценариях" },
+        { "id": "b", "text": "computed предназначен для чистого derived state без сайд-эффектов" },
+        { "id": "c", "text": "watch нельзя запускать с immediate" },
+        { "id": "d", "text": "computed нужен только для работы с DOM" }
+      ],
+      "answer": "b",
+      "explain": "Производные данные должны быть декларативными и кэшируемыми — это зона ответственности computed."
+    },
+    {
+      "id": "q3",
+      "prompt": "Какой риск закрывает cleanup в watch/watchEffect при async-запросах?",
+      "choices": [
+        { "id": "a", "text": "Потеря generic-типов в TypeScript" },
+        { "id": "b", "text": "Race condition: устаревший ответ приходит позже и перезаписывает актуальный" },
+        { "id": "c", "text": "Слишком ранний mount компонента" },
+        { "id": "d", "text": "Отключение реактивности во всём setup" }
+      ],
+      "answer": "b",
+      "explain": "Cleanup инвалидирует предыдущий эффект и предотвращает применение stale-результата."
+    },
+    {
+      "id": "q4",
+      "prompt": "Нужно перезапрашивать данные только при изменении query и page. Что выбрать?",
+      "choices": [
+        { "id": "a", "text": "watch([query, page], callback)" },
+        { "id": "b", "text": "watchEffect(() => callback()) без чтения query/page внутри" },
+        { "id": "c", "text": "computed(() => fetchData())" },
+        { "id": "d", "text": "onMounted(() => fetchData()) только один раз" }
+      ],
+      "answer": "a",
+      "explain": "Явный список источников в watch даёт прогнозируемый и контролируемый триггер."
+    },
+    {
+      "id": "q5",
+      "prompt": "В каком случае watchEffect уместнее watch?",
+      "choices": [
+        { "id": "a", "text": "Когда нужен строгий контроль запуска только по selectedId" },
+        { "id": "b", "text": "Когда эффект должен автоматически реагировать на несколько неявных зависимостей" },
+        { "id": "c", "text": "Когда нужно хранить изменяемый state" },
+        { "id": "d", "text": "Когда надо заменить computed для derived state" }
+      ],
+      "answer": "b",
+      "explain": "watchEffect удобен для авто-подписки на всё, что реально читается внутри эффекта."
+    },
+    {
+      "id": "q6",
+      "prompt": "Какой паттерн отмены запросов наиболее корректен в watch при fetch?",
+      "choices": [
+        { "id": "a", "text": "Использовать AbortController и abort() в cleanup" },
+        { "id": "b", "text": "Ничего не отменять, просто ждать последний ответ" },
+        { "id": "c", "text": "Перенести fetch в computed" },
+        { "id": "d", "text": "Вызывать nextTick перед каждым fetch" }
+      ],
+      "answer": "a",
+      "explain": "AbortController + cleanup — стандартная безопасная схема для отмены in-flight запроса."
+    },
+    {
+      "id": "q7",
+      "prompt": "Если в watch нужен первый запуск сразу после создания эффекта, что использовать?",
+      "choices": [
+        { "id": "a", "text": "deep: true" },
+        { "id": "b", "text": "flush: post" },
+        { "id": "c", "text": "immediate: true" },
+        { "id": "d", "text": "once: true" }
+      ],
+      "answer": "c",
+      "explain": "immediate: true запускает callback сразу, не дожидаясь первого изменения источника."
+    },
+    {
+      "id": "q8",
+      "prompt": "Что означает flush: 'post' в watch?",
+      "choices": [
+        { "id": "a", "text": "Callback выполняется после обновления DOM компонента" },
+        { "id": "b", "text": "Callback выполняется до любого реактивного изменения" },
+        { "id": "c", "text": "Watch автоматически становится deep" },
+        { "id": "d", "text": "Эффект запускается только один раз" }
+      ],
+      "answer": "a",
+      "explain": "flush: 'post' полезен, когда эффект зависит от уже обновлённого DOM."
+    },
+    {
+      "id": "q9",
+      "prompt": "Какой анти-паттерн чаще всего приводит к «магическим» перезапускам watchEffect?",
+      "choices": [
+        { "id": "a", "text": "Минимальный и явный набор чтений в эффекте" },
+        { "id": "b", "text": "Случайное чтение лишних реактивных полей внутри эффекта" },
+        { "id": "c", "text": "Использование AbortController" },
+        { "id": "d", "text": "Возврат readonly(state) из composable" }
+      ],
+      "answer": "b",
+      "explain": "Любое прочитанное реактивное значение становится зависимостью и может неожиданно триггерить эффект."
+    },
+    {
+      "id": "q10",
+      "prompt": "Нужно отследить nested-изменения в объекте filters целиком. Какой вариант корректный?",
+      "choices": [
+        { "id": "a", "text": "watch(filters, cb, { deep: true })" },
+        { "id": "b", "text": "watchEffect(() => filters) без чтения полей" },
+        { "id": "c", "text": "computed(() => filters) и side-effect внутри" },
+        { "id": "d", "text": "onMounted(() => cb(filters))" }
+      ],
+      "answer": "a",
+      "explain": "Для отслеживания вложенных мутаций объекта нужен deep-watch (осознанно, из-за стоимости)."
+    },
+    {
+      "id": "q11",
+      "prompt": "Как правильно организовать состояние загрузки в async-watch?",
+      "choices": [
+        { "id": "a", "text": "isLoading = true до запроса и гарантированный сброс в finally" },
+        { "id": "b", "text": "Менять isLoading только при успехе" },
+        { "id": "c", "text": "Убрать isLoading, пусть UI сам догадается" },
+        { "id": "d", "text": "Хранить isLoading в computed с fetch внутри" }
+      ],
+      "answer": "a",
+      "explain": "finally гарантирует консистентное завершение состояния независимо от успеха/ошибки/отмены."
+    },
+    {
+      "id": "q12",
+      "prompt": "Что архитектурно важнее при выборе между watch и watchEffect в прод-коде?",
+      "choices": [
+        { "id": "a", "text": "Всегда выбирать watchEffect, он короче" },
+        { "id": "b", "text": "Баланс явности зависимостей, читаемости и риска неявных триггеров" },
+        { "id": "c", "text": "Ориентироваться только на количество строк кода" },
+        { "id": "d", "text": "Избегать обоих и писать всё в onMounted" }
+      ],
+      "answer": "b",
+      "explain": "Главный критерий — предсказуемость поведения и сопровождаемость, а не краткость записи."
+    },
+    {
+      "id": "q13",
+      "prompt": "Какой вариант лучше отражает зрелый паттерн для data-fetch в реактивном UI?",
+      "choices": [
+        { "id": "a", "text": "watch с явными источниками + cleanup/abort + error/loading state" },
+        { "id": "b", "text": "computed с fetch и мутацией state внутри" },
+        { "id": "c", "text": "watchEffect без контроля зависимостей и отмены" },
+        { "id": "d", "text": "Ручной fetch через setInterval независимо от пользовательских действий" }
+      ],
+      "answer": "a",
+      "explain": "Явные источники, безопасная отмена и контролируемые состояния дают надёжный production-подход."
+    }
+  ]
+}
