@@ -1,16 +1,11 @@
 services:
-  vite-static:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: frontend-test-vite
-    ports:
-      - "127.0.0.1:18081:80"
+  nuxt-app:
+    build: .
+    container_name: frontend-tests
     restart: unless-stopped
-    networks:
-      - stellar_app-network
-
-networks:
-  stellar_app-network:
-    external: true
-    name: stellar_app-network
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+    ports:
+      - "127.0.0.1:3002:3000"
