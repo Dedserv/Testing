@@ -1,0 +1,163 @@
+{
+  "id": "2026-03-21",
+  "title": "Vue 3: День 7 (новый цикл) — watch vs watchEffect: выбор, cleanup, flush и безопасный async",
+  "date": "2026-03-21",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Какой инструмент во Vue 3 лучше использовать для чистого производного значения visibleItems из items и filters?",
+      "choices": [
+        { "id": "a", "text": "watch([items, filters], () => visibleItems.value = ...)" },
+        { "id": "b", "text": "computed(() => applyFilters(items.value, filters.value))" },
+        { "id": "c", "text": "watchEffect(() => visibleItems.value = ...)" },
+        { "id": "d", "text": "onMounted(() => visibleItems.value = ...)" }
+      ],
+      "answer": "b",
+      "explain": "Для чистого производного состояния используется computed: декларативно, кэшируемо, без побочных эффектов."
+    },
+    {
+      "id": "q2",
+      "prompt": "Какой риск возникает при деструктуризации reactive-объекта без toRefs в composable?",
+      "choices": [
+        { "id": "a", "text": "Сломается SSR-гидрация" },
+        { "id": "b", "text": "Потеряется реактивная связь у извлечённых полей" },
+        { "id": "c", "text": "computed перестанет работать в setup" },
+        { "id": "d", "text": "watch начнёт работать только с immediate" }
+      ],
+      "answer": "b",
+      "explain": "Обычная деструктуризация снимает прокси-обёртку. Для сохранения реактивности нужны toRefs/toRef."
+    },
+    {
+      "id": "q3",
+      "prompt": "Когда watch обычно предпочтительнее watchEffect?",
+      "choices": [
+        { "id": "a", "text": "Когда нужен явный контроль источников триггера" },
+        { "id": "b", "text": "Когда зависимости должны подхватываться неявно" },
+        { "id": "c", "text": "Когда нужен только первый запуск без изменений" },
+        { "id": "d", "text": "Когда нельзя использовать TypeScript" }
+      ],
+      "answer": "a",
+      "explain": "watch задаёт точный source, что лучше для предсказуемости и отладки."
+    },
+    {
+      "id": "q4",
+      "prompt": "В каком сценарии watchEffect чаще уместнее watch?",
+      "choices": [
+        { "id": "a", "text": "Когда нужно реагировать только на query и page" },
+        { "id": "b", "text": "Когда зависимости динамически считываются внутри эффекта" },
+        { "id": "c", "text": "Когда требуется oldValue/newValue" },
+        { "id": "d", "text": "Когда нужен deep: true" }
+      ],
+      "answer": "b",
+      "explain": "watchEffect автоматически трекает всё прочитанное в теле эффекта и удобен при динамических зависимостях."
+    },
+    {
+      "id": "q5",
+      "prompt": "Что верно про immediate в watch?",
+      "choices": [
+        { "id": "a", "text": "Включает отслеживание вложенных полей" },
+        { "id": "b", "text": "Запускает callback сразу после создания watcher и затем при изменениях" },
+        { "id": "c", "text": "Гарантирует синхронное выполнение в текущем стеке" },
+        { "id": "d", "text": "Отключает возможность cleanup" }
+      ],
+      "answer": "b",
+      "explain": "immediate нужен, когда стартовый побочный эффект должен выполниться без отдельного ручного вызова."
+    },
+    {
+      "id": "q6",
+      "prompt": "Какой flush выбрать, если эффект читает уже обновлённый DOM?",
+      "choices": [
+        { "id": "a", "text": "flush: 'pre'" },
+        { "id": "b", "text": "flush: 'post'" },
+        { "id": "c", "text": "flush: 'sync'" },
+        { "id": "d", "text": "flush: 'deep'" }
+      ],
+      "answer": "b",
+      "explain": "flush: 'post' выполняет callback после DOM update, что нужно для DOM-зависимой логики."
+    },
+    {
+      "id": "q7",
+      "prompt": "Зачем нужен cleanup (onInvalidate/onCleanup) в watch/watchEffect?",
+      "choices": [
+        { "id": "a", "text": "Чтобы принудительно запускать ререндер" },
+        { "id": "b", "text": "Чтобы очищать ресурсы предыдущего запуска (таймеры, подписки, запросы)" },
+        { "id": "c", "text": "Чтобы отключать реактивность ref" },
+        { "id": "d", "text": "Чтобы ускорять работу TypeScript" }
+      ],
+      "answer": "b",
+      "explain": "Cleanup предотвращает утечки и гонки состояний между последовательными запусками эффекта."
+    },
+    {
+      "id": "q8",
+      "prompt": "Какой паттерн корректен для отмены устаревшего fetch внутри watch?",
+      "choices": [
+        { "id": "a", "text": "AbortController + abort() в cleanup" },
+        { "id": "b", "text": "deep: true + try/catch" },
+        { "id": "c", "text": "Перенос fetch в computed" },
+        { "id": "d", "text": "Оставить только flush: 'sync'" }
+      ],
+      "answer": "a",
+      "explain": "AbortController позволяет отменять in-flight запросы, которые стали неактуальны."
+    },
+    {
+      "id": "q9",
+      "prompt": "Какой debounce-подход в watcher наиболее надёжный?",
+      "choices": [
+        { "id": "a", "text": "Создавать setTimeout и очищать его в cleanup" },
+        { "id": "b", "text": "Ставить несколько setTimeout без очистки" },
+        { "id": "c", "text": "Использовать только immediate" },
+        { "id": "d", "text": "Заменить watch на onMounted" }
+      ],
+      "answer": "a",
+      "explain": "Очистка таймера исключает запуск устаревших вызовов и лишнюю нагрузку."
+    },
+    {
+      "id": "q10",
+      "prompt": "Какой анти-паттерн чаще всего нарушает предсказуемость реактивности?",
+      "choices": [
+        { "id": "a", "text": "Сетевые запросы и мутации внутри computed" },
+        { "id": "b", "text": "Явные source в watch" },
+        { "id": "c", "text": "readonly для внешнего API composable" },
+        { "id": "d", "text": "Обработка ошибок через try/catch" }
+      ],
+      "answer": "a",
+      "explain": "computed должен оставаться чистой функцией производного состояния, без сайд-эффектов."
+    },
+    {
+      "id": "q11",
+      "prompt": "Как правильно управлять isLoading в async watcher?",
+      "choices": [
+        { "id": "a", "text": "Ставить false только в ветке успеха" },
+        { "id": "b", "text": "isLoading=true перед запросом, сброс в finally" },
+        { "id": "c", "text": "Менять isLoading в computed" },
+        { "id": "d", "text": "Сбрасывать isLoading только в cleanup" }
+      ],
+      "answer": "b",
+      "explain": "finally гарантирует корректный сброс состояния и при успехе, и при ошибке/отмене."
+    },
+    {
+      "id": "q12",
+      "prompt": "Что лучше для production-ready useSearch composable?",
+      "choices": [
+        { "id": "a", "text": "watch с явными source + debounce + cleanup/abort + типизированный state" },
+        { "id": "b", "text": "watchEffect без cleanup и без обработки ошибок" },
+        { "id": "c", "text": "Один fetch в onMounted без реакции на query" },
+        { "id": "d", "text": "fetch внутри computed для автообновления" }
+      ],
+      "answer": "a",
+      "explain": "Такой подход обеспечивает контроль триггеров, устойчивость к гонкам и чистый API composable."
+    },
+    {
+      "id": "q13",
+      "prompt": "Какой критерий выбора между watch и watchEffect наиболее практичный?",
+      "choices": [
+        { "id": "a", "text": "Всегда использовать watchEffect, он короче" },
+        { "id": "b", "text": "Если источники известны заранее — watch; если зависимости динамические — watchEffect" },
+        { "id": "c", "text": "watch только для template, watchEffect только для script" },
+        { "id": "d", "text": "Выбор зависит только от наличия TypeScript" }
+      ],
+      "answer": "b",
+      "explain": "Главный практический критерий — степень явности и стабильности зависимостей эффекта."
+    }
+  ]
+}
