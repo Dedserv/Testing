@@ -1,16 +1,17 @@
 [
   {
     "id": "2026-03-24",
-    "title": "Vue 3: День 10 (новый цикл) — Scenario Builder kickoff: архитектура, state-flow и composables",
+    "title": "Vue 3: День 10 (новый цикл) — диагностика реактивности и performance-анти-паттерны",
     "date": "2026-03-24",
     "path": "/tests/2026-03-24.json",
     "tags": [
       "vue",
       "vue3",
       "reactivity",
-      "scenario-builder",
-      "architecture",
-      "composables",
+      "performance",
+      "debugging",
+      "watch",
+      "computed",
       "typescript"
     ]
   },
