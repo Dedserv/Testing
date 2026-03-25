@@ -1,3 +1,5 @@
+# Вроде как вообще не используется
+
 FROM node:20-alpine AS build
 WORKDIR /app
 
