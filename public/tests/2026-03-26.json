@@ -1,0 +1,319 @@
+{
+  "id": "2026-03-26",
+  "title": "Vue 3: День 12 (новый цикл) — computed vs watch vs watchEffect в composables: выбор, границы и анти-паттерны",
+  "date": "2026-03-26",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "(Повторение) Какой инструмент в Vue 3 предназначен для чистого производного состояния без side effects?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "watchEffect"
+        },
+        {
+          "id": "b",
+          "text": "watch"
+        },
+        {
+          "id": "c",
+          "text": "computed"
+        },
+        {
+          "id": "d",
+          "text": "onMounted"
+        }
+      ],
+      "answer": "c",
+      "explain": "computed — декларативный способ вычислять производные данные без побочных эффектов."
+    },
+    {
+      "id": "q2",
+      "prompt": "(Повторение) Когда deep watch обычно оправдан?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Всегда, чтобы ничего не пропустить"
+        },
+        {
+          "id": "b",
+          "text": "Когда действительно нужно ловить вложенные изменения сложной структуры"
+        },
+        {
+          "id": "c",
+          "text": "Когда есть computed"
+        },
+        {
+          "id": "d",
+          "text": "Когда нужен SSR"
+        }
+      ],
+      "answer": "b",
+      "explain": "deep watch дорогой; применять его стоит только при реальной необходимости."
+    },
+    {
+      "id": "q3",
+      "prompt": "(Повторение) Что помогает избежать stale-ответов в асинхронном watcher?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "flush: \"sync\""
+        },
+        {
+          "id": "b",
+          "text": "toRefs"
+        },
+        {
+          "id": "c",
+          "text": "cleanup через onInvalidate / AbortController"
+        },
+        {
+          "id": "d",
+          "text": "markRaw"
+        }
+      ],
+      "answer": "c",
+      "explain": "Нужно отменять/инвалидировать прошлый запрос перед обработкой нового."
+    },
+    {
+      "id": "q4",
+      "prompt": "Какой критерий выбора между watch и watchEffect наиболее точный?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "watchEffect всегда быстрее"
+        },
+        {
+          "id": "b",
+          "text": "watch — явные источники; watchEffect — авто-трекинг зависимостей внутри эффекта"
+        },
+        {
+          "id": "c",
+          "text": "watch только для ref"
+        },
+        {
+          "id": "d",
+          "text": "watchEffect только для template"
+        }
+      ],
+      "answer": "b",
+      "explain": "Главное различие — явность источника и предсказуемость реактивного триггера."
+    },
+    {
+      "id": "q5",
+      "prompt": "В useSearchFilters нужно сбрасывать page при изменении query и sort. Что архитектурно лучше?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "watch([query, sort], () => { page.value = 1 })"
+        },
+        {
+          "id": "b",
+          "text": "computed(() => { page.value = 1; return query.value })"
+        },
+        {
+          "id": "c",
+          "text": "watchEffect(() => { if (query.value || sort.value) page.value = 1 }) без ограничений"
+        },
+        {
+          "id": "d",
+          "text": "onMounted(() => { page.value = 1 })"
+        }
+      ],
+      "answer": "a",
+      "explain": "Это явный side effect от конкретных зависимостей — лучше watch с source-массивом."
+    },
+    {
+      "id": "q6",
+      "prompt": "Почему side effect внутри computed считается anti-pattern?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "computed не работает с TypeScript"
+        },
+        {
+          "id": "b",
+          "text": "computed выполняется только один раз"
+        },
+        {
+          "id": "c",
+          "text": "Нарушается чистота вычисления и предсказуемость реактивного графа"
+        },
+        {
+          "id": "d",
+          "text": "computed нельзя использовать в composables"
+        }
+      ],
+      "answer": "c",
+      "explain": "computed должен быть чистой функцией от зависимостей, без мутаций и I/O."
+    },
+    {
+      "id": "q7",
+      "prompt": "Какой flush выбрать, если watcher читает размеры DOM после изменения состояния?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "pre"
+        },
+        {
+          "id": "b",
+          "text": "post"
+        },
+        {
+          "id": "c",
+          "text": "sync"
+        },
+        {
+          "id": "d",
+          "text": "deep"
+        }
+      ],
+      "answer": "b",
+      "explain": "flush: post выполняется после обновления DOM, когда измерения актуальны."
+    },
+    {
+      "id": "q8",
+      "prompt": "Что из ниже перечисленного лучше описывает роль watchEffect в продакшн-коде?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Замена computed во всех случаях"
+        },
+        {
+          "id": "b",
+          "text": "Удобен для быстрых эффектов с естественным набором зависимостей, если контроль source не критичен"
+        },
+        {
+          "id": "c",
+          "text": "Инструмент только для SSR"
+        },
+        {
+          "id": "d",
+          "text": "Подходит исключительно для синхронных операций"
+        }
+      ],
+      "answer": "b",
+      "explain": "watchEffect хорош там, где авто-сбор зависимостей повышает читаемость и не вредит контролю."
+    },
+    {
+      "id": "q9",
+      "prompt": "В composable нужно синхронизировать фильтры с router.replace. Какой вариант безопаснее?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "computed с router.replace внутри"
+        },
+        {
+          "id": "b",
+          "text": "watch по явным полям фильтров с защитой от лишних вызовов"
+        },
+        {
+          "id": "c",
+          "text": "deep watch всего состояния приложения"
+        },
+        {
+          "id": "d",
+          "text": "watchEffect, читающий весь store"
+        }
+      ],
+      "answer": "b",
+      "explain": "Явные источники и guard-условия уменьшают риск циклов и лишней навигации."
+    },
+    {
+      "id": "q10",
+      "prompt": "Какой риск у чрезмерного использования watchEffect в сложной бизнес-логике?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Потеря reactivity transform"
+        },
+        {
+          "id": "b",
+          "text": "Неявные зависимости усложняют отладку и контроль триггеров"
+        },
+        {
+          "id": "c",
+          "text": "Невозможность cleanup"
+        },
+        {
+          "id": "d",
+          "text": "Невозможность работы с async"
+        }
+      ],
+      "answer": "b",
+      "explain": "При росте сложности неявность зависимостей ведёт к хрупкому поведению."
+    },
+    {
+      "id": "q11",
+      "prompt": "Какой шаблон лучше для requestParams в useSearchFilters?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "computed(() => ({ q: query.value, sort: sort.value, page: page.value }))"
+        },
+        {
+          "id": "b",
+          "text": "watchEffect(() => requestParams.value = { ... })"
+        },
+        {
+          "id": "c",
+          "text": "onMounted(() => requestParams.value = ... )"
+        },
+        {
+          "id": "d",
+          "text": "deep watch filters + ручной merge"
+        }
+      ],
+      "answer": "a",
+      "explain": "requestParams — производные данные, их нужно вычислять через computed."
+    },
+    {
+      "id": "q12",
+      "prompt": "Что нужно сделать в async watchEffect при новом запуске, чтобы избежать гонки?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Ничего, Vue сам отменяет fetch"
+        },
+        {
+          "id": "b",
+          "text": "Зарегистрировать cleanup через onInvalidate и отменять предыдущую операцию"
+        },
+        {
+          "id": "c",
+          "text": "Использовать только sync flush"
+        },
+        {
+          "id": "d",
+          "text": "Перевести всё в methods"
+        }
+      ],
+      "answer": "b",
+      "explain": "Cleanup обязателен при конкурентных async-эффектах, иначе возможны stale updates."
+    },
+    {
+      "id": "q13",
+      "prompt": "Какой результат дня соответствует качественному пониманию темы?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Смешать computed и side effects в одном месте ради краткости"
+        },
+        {
+          "id": "b",
+          "text": "Собрать composable, где computed отвечает за данные, watch/watchEffect — за эффекты, и есть защита от лишних async вызовов"
+        },
+        {
+          "id": "c",
+          "text": "Заменить все watch на deep watch"
+        },
+        {
+          "id": "d",
+          "text": "Оставить только watchEffect без явных источников"
+        }
+      ],
+      "answer": "b",
+      "explain": "Качество — это разделение ответственности и предсказуемое реактивное поведение в реальном кейсе."
+    }
+  ]
+}

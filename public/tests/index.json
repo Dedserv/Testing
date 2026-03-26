@@ -1,5 +1,22 @@
 [
   {
+    "id": "2026-03-26",
+    "title": "Vue 3: День 12 (новый цикл) — computed vs watch vs watchEffect в composables: выбор, границы и анти-паттерны",
+    "date": "2026-03-26",
+    "path": "/tests/2026-03-26.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "computed",
+      "watch",
+      "watchEffect",
+      "composables",
+      "architecture",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-03-25",
     "title": "Vue 3: День 11 (новый цикл) — watch vs watchEffect: flush timing, cleanup и устойчивый async",
     "date": "2026-03-25",
