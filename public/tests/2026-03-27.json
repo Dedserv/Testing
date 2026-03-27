@@ -1,0 +1,163 @@
+{
+  "id": "2026-03-27",
+  "title": "Vue 3: День 13 (новый цикл) — watch vs watchEffect в async-поиске: cleanup, flush и контроль гонок",
+  "date": "2026-03-27",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "(Повторение) Что из перечисленного является главным критерием выбора между watch и watchEffect?",
+      "choices": [
+        { "id": "a", "text": "watchEffect всегда производительнее" },
+        { "id": "b", "text": "watch — для template, watchEffect — для script" },
+        { "id": "c", "text": "watch — явные источники; watchEffect — авто-сбор зависимостей" },
+        { "id": "d", "text": "Разницы нет, это синонимы" }
+      ],
+      "answer": "c",
+      "explain": "Ключевая разница — явность источников и предсказуемость триггеров у watch против авто-трекинга у watchEffect."
+    },
+    {
+      "id": "q2",
+      "prompt": "(Повторение) Какой flush обычно нужен, если эффект читает DOM после реактивного обновления?",
+      "choices": [
+        { "id": "a", "text": "pre" },
+        { "id": "b", "text": "post" },
+        { "id": "c", "text": "sync" },
+        { "id": "d", "text": "deep" }
+      ],
+      "answer": "b",
+      "explain": "flush: 'post' выполняет callback после обновления DOM."
+    },
+    {
+      "id": "q3",
+      "prompt": "(Повторение) Для чего в async watcher нужен cleanup (onInvalidate/AbortController)?",
+      "choices": [
+        { "id": "a", "text": "Чтобы включить TypeScript-типизацию" },
+        { "id": "b", "text": "Чтобы отключить reactivity" },
+        { "id": "c", "text": "Чтобы отменять/игнорировать устаревшие async-операции" },
+        { "id": "d", "text": "Чтобы watcher срабатывал только один раз" }
+      ],
+      "answer": "c",
+      "explain": "Cleanup защищает от stale-обновлений и race condition при частых изменениях источника."
+    },
+    {
+      "id": "q4",
+      "prompt": "В composable useSearchSuggestions нужно делать запрос только при изменении query. Что архитектурно лучше?",
+      "choices": [
+        { "id": "a", "text": "watch(query, fetchSuggestions)" },
+        { "id": "b", "text": "computed(() => fetchSuggestions(query.value))" },
+        { "id": "c", "text": "watchEffect(() => query.value && fetchSuggestions(query.value)) без ограничений" },
+        { "id": "d", "text": "onMounted(fetchSuggestions)" }
+      ],
+      "answer": "a",
+      "explain": "Это явный side effect от конкретного источника query — watch даёт лучший контроль."
+    },
+    {
+      "id": "q5",
+      "prompt": "Как корректно избежать гонки ответов при быстром вводе в поле поиска?",
+      "choices": [
+        { "id": "a", "text": "Ставить flush: 'sync'" },
+        { "id": "b", "text": "Отменять предыдущий запрос через AbortController в cleanup" },
+        { "id": "c", "text": "Использовать deep: true" },
+        { "id": "d", "text": "Оборачивать всё в nextTick" }
+      ],
+      "answer": "b",
+      "explain": "AbortController + cleanup гарантирует, что устаревший запрос не перезапишет актуальные данные."
+    },
+    {
+      "id": "q6",
+      "prompt": "Какой anti-pattern в контексте реактивности наиболее опасен для fetch-логики?",
+      "choices": [
+        { "id": "a", "text": "Хранить loading в ref" },
+        { "id": "b", "text": "Делать запрос внутри computed" },
+        { "id": "c", "text": "Использовать watch с явным источником" },
+        { "id": "d", "text": "Возвращать readonly наружу" }
+      ],
+      "answer": "b",
+      "explain": "computed должен быть чистым производным состоянием, без I/O и побочных эффектов."
+    },
+    {
+      "id": "q7",
+      "prompt": "Почему watchEffect может быть менее предсказуем в сложном composable?",
+      "choices": [
+        { "id": "a", "text": "Он не поддерживает async" },
+        { "id": "b", "text": "Нельзя использовать ref внутри" },
+        { "id": "c", "text": "Зависимости собираются неявно, что усложняет контроль триггеров" },
+        { "id": "d", "text": "Он работает только в setup() без TypeScript" }
+      ],
+      "answer": "c",
+      "explain": "Неявные зависимости в крупных эффектах затрудняют отладку и масштабирование."
+    },
+    {
+      "id": "q8",
+      "prompt": "В каком случае watchEffect в этом сценарии оправдан?",
+      "choices": [
+        { "id": "a", "text": "Когда нужно строго контролировать только query как источник" },
+        { "id": "b", "text": "Когда эффект должен естественно реагировать на небольшой набор читаемых внутри refs" },
+        { "id": "c", "text": "Когда нужен deep watch объекта фильтров" },
+        { "id": "d", "text": "Когда side effect нужно спрятать в computed" }
+      ],
+      "answer": "b",
+      "explain": "watchEffect уместен для коротких эффектов с понятным авто-трекингом зависимостей."
+    },
+    {
+      "id": "q9",
+      "prompt": "Как лучше организовать состояние composable для запросов подсказок?",
+      "choices": [
+        { "id": "a", "text": "data/error/loading как ref + явный watch на query" },
+        { "id": "b", "text": "Только один reactive без явной структуры" },
+        { "id": "c", "text": "Локальные let-переменные без реактивности" },
+        { "id": "d", "text": "Считать loading через computed от длины query" }
+      ],
+      "answer": "a",
+      "explain": "Явная структура состояния и явный триггер эффекта делают код предсказуемым и тестируемым."
+    },
+    {
+      "id": "q10",
+      "prompt": "Что важно сделать в watcher перед новым async-запросом, кроме cleanup?",
+      "choices": [
+        { "id": "a", "text": "Сбросить data и error в согласованное состояние" },
+        { "id": "b", "text": "Вызывать markRaw для response" },
+        { "id": "c", "text": "Перевести watcher в deep режим" },
+        { "id": "d", "text": "Вызывать provide/inject" }
+      ],
+      "answer": "a",
+      "explain": "Перед стартом нового запроса состояние UI должно быть консистентным (loading/error/data)."
+    },
+    {
+      "id": "q11",
+      "prompt": "Какой вариант лучше для нормализации query перед запросом?",
+      "choices": [
+        { "id": "a", "text": "computed(() => query.value.trim()) и watch по этому computed" },
+        { "id": "b", "text": "watchEffect + trim в каждом месте использования" },
+        { "id": "c", "text": "Менять query напрямую в template на каждый keypress" },
+        { "id": "d", "text": "Использовать deep watch по всему состоянию формы" }
+      ],
+      "answer": "a",
+      "explain": "Нормализация как computed отделяет производные данные от побочных эффектов и упрощает логику watch."
+    },
+    {
+      "id": "q12",
+      "prompt": "Какой признак указывает на архитектурно зрелую реализацию useSearchSuggestions?",
+      "choices": [
+        { "id": "a", "text": "Все эффекты смешаны в одном watchEffect на 40 строк" },
+        { "id": "b", "text": "computed для производных данных, watch для запроса, cleanup для отмены" },
+        { "id": "c", "text": "Запрос внутри computed, чтобы кэшировался" },
+        { "id": "d", "text": "Отсутствуют состояния error/loading" }
+      ],
+      "answer": "b",
+      "explain": "Разделение обязанностей (данные vs эффекты) — главный маркер качественной архитектуры composable."
+    },
+    {
+      "id": "q13",
+      "prompt": "Какое утверждение про deep watch в задаче с query наиболее корректно?",
+      "choices": [
+        { "id": "a", "text": "Нужен всегда, иначе watcher не работает" },
+        { "id": "b", "text": "Для ref<string> query deep watch не нужен и только добавляет лишнюю стоимость" },
+        { "id": "c", "text": "Нужен только с flush: 'post'" },
+        { "id": "d", "text": "Нужен для корректной работы AbortController" }
+      ],
+      "answer": "b",
+      "explain": "deep актуален для вложенных структур; для простого строкового ref это лишняя нагрузка."
+    }
+  ]
+}

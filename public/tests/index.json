@@ -1,5 +1,22 @@
 [
   {
+    "id": "2026-03-27",
+    "title": "Vue 3: День 13 (новый цикл) — watch vs watchEffect в async-поиске: cleanup, flush и контроль гонок",
+    "date": "2026-03-27",
+    "path": "/tests/2026-03-27.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "watch",
+      "watchEffect",
+      "cleanup",
+      "flush",
+      "async",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-03-26",
     "title": "Vue 3: День 12 (новый цикл) — computed vs watch vs watchEffect в composables: выбор, границы и анти-паттерны",
     "date": "2026-03-26",
