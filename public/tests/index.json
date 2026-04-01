@@ -1,5 +1,23 @@
 [
   {
+    "id": "2026-04-01",
+    "title": "Vue 3: День 17 (новый цикл) — watch vs watchEffect, cleanup и stop в async-валидации формы",
+    "date": "2026-04-01",
+    "path": "/tests/2026-04-01.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "watch",
+      "watchEffect",
+      "cleanup",
+      "stop",
+      "async",
+      "validation",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-03-30",
     "title": "Vue 3: День 16 (новый цикл) — watch vs watchEffect и onInvalidate в debounced async-поиске",
     "date": "2026-03-30",
