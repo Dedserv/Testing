@@ -1,5 +1,23 @@
 [
   {
+    "id": "2026-04-04",
+    "title": "Vue 3: День 20 (новый цикл) — watch/watchEffect, debounce и cleanup в useSearch composable",
+    "date": "2026-04-04",
+    "path": "/tests/2026-04-04.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "watch",
+      "watchEffect",
+      "debounce",
+      "cleanup",
+      "async",
+      "composables",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-04-03",
     "title": "Vue 3: День 19 (новый цикл) — watch vs watchEffect в composable: точечный контроль, автотрекинг и защита от гонок",
     "date": "2026-04-03",
