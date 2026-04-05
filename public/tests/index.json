@@ -1,5 +1,23 @@
 [
   {
+    "id": "2026-04-05",
+    "title": "Vue 3: День 21 (новый цикл) — ref/reactive, computed и выбор между watch/watchEffect в форме фильтров",
+    "date": "2026-04-05",
+    "path": "/tests/2026-04-05.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "ref",
+      "reactive",
+      "computed",
+      "watch",
+      "watchEffect",
+      "forms",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-04-04",
     "title": "Vue 3: День 20 (новый цикл) — watch/watchEffect, debounce и cleanup в useSearch composable",
     "date": "2026-04-04",
