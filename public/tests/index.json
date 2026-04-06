@@ -1,5 +1,131 @@
 [
   {
+    "id": "2026-04-06",
+    "title": "Vue 3: День 22 (новый цикл) — watch vs watchEffect: immediate, flush и cleanup в управляемых side effects",
+    "date": "2026-04-06",
+    "path": "/tests/2026-04-06.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "watch",
+      "watchEffect",
+      "immediate",
+      "flush",
+      "cleanup",
+      "async",
+      "typescript"
+    ]
+  },
+  {
+    "id": "2026-04-05",
+    "title": "Vue 3: День 21 (новый цикл) — ref/reactive, computed и выбор между watch/watchEffect в форме фильтров",
+    "date": "2026-04-05",
+    "path": "/tests/2026-04-05.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "ref",
+      "reactive",
+      "computed",
+      "watch",
+      "watchEffect",
+      "forms",
+      "typescript"
+    ]
+  },
+  {
+    "id": "2026-04-04",
+    "title": "Vue 3: День 20 (новый цикл) — watch/watchEffect, debounce и cleanup в useSearch composable",
+    "date": "2026-04-04",
+    "path": "/tests/2026-04-04.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "watch",
+      "watchEffect",
+      "debounce",
+      "cleanup",
+      "async",
+      "composables",
+      "typescript"
+    ]
+  },
+  {
+    "id": "2026-04-03",
+    "title": "Vue 3: День 19 (новый цикл) — watch vs watchEffect в composable: точечный контроль, автотрекинг и защита от гонок",
+    "date": "2026-04-03",
+    "path": "/tests/2026-04-03.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "watch",
+      "watchEffect",
+      "composables",
+      "async",
+      "debounce",
+      "race-condition",
+      "typescript"
+    ]
+  },
+  {
+    "id": "2026-04-02",
+    "title": "Vue 3: День 18 (новый цикл) — flush timing (pre/post/sync), cleanup и устойчивый UI-side effect",
+    "date": "2026-04-02",
+    "path": "/tests/2026-04-02.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "watch",
+      "watchEffect",
+      "flush",
+      "cleanup",
+      "async",
+      "ui-effects",
+      "typescript"
+    ]
+  },
+  {
+    "id": "2026-04-01",
+    "title": "Vue 3: День 17 (новый цикл) — watch vs watchEffect, cleanup и stop в async-валидации формы",
+    "date": "2026-04-01",
+    "path": "/tests/2026-04-01.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "watch",
+      "watchEffect",
+      "cleanup",
+      "stop",
+      "async",
+      "validation",
+      "typescript"
+    ]
+  },
+  {
+    "id": "2026-03-30",
+    "title": "Vue 3: День 16 (новый цикл) — watch vs watchEffect и onInvalidate в debounced async-поиске",
+    "date": "2026-03-30",
+    "path": "/tests/2026-03-30.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "watch",
+      "watchEffect",
+      "onInvalidate",
+      "debounce",
+      "async",
+      "composables",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-03-29",
     "title": "Vue 3: День 15 (новый цикл) — watch vs watchEffect: flush, cleanup и устойчивый async-поток",
     "date": "2026-03-29",
