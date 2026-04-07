@@ -1,5 +1,23 @@
 [
   {
+    "id": "2026-04-07",
+    "title": "Vue 3: День 23 (новый цикл) — реактивность в composables: toRef/toRefs, безопасная деструктуризация и контракт API",
+    "date": "2026-04-07",
+    "path": "/tests/2026-04-07.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "composables",
+      "toRef",
+      "toRefs",
+      "unref",
+      "isRef",
+      "architecture",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-04-06",
     "title": "Vue 3: День 22 (новый цикл) — watch vs watchEffect: immediate, flush и cleanup в управляемых side effects",
     "date": "2026-04-06",
