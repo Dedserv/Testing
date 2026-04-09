@@ -1,5 +1,22 @@
 [
   {
+    "id": "2026-04-09",
+    "title": "Vue 3: День 25 (новый цикл) — диагностика реактивности и performance-анти-паттерны",
+    "date": "2026-04-09",
+    "path": "/tests/2026-04-09.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "diagnostics",
+      "performance",
+      "anti-patterns",
+      "watch",
+      "computed",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-04-08",
     "title": "Vue 3: День 24 (новый цикл) — watch vs watchEffect: flush timing, cleanup и устойчивые async-side effects",
     "date": "2026-04-08",
