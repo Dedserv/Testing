@@ -1,5 +1,23 @@
 [
   {
+    "id": "2026-04-10",
+    "title": "Vue 3: День 26 (новый цикл) — watch vs watchEffect: выбор инструмента, cleanup и устойчивые side effects",
+    "date": "2026-04-10",
+    "path": "/tests/2026-04-10.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "watch",
+      "watchEffect",
+      "cleanup",
+      "side-effects",
+      "composables",
+      "async",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-04-09",
     "title": "Vue 3: День 25 (новый цикл) — диагностика реактивности и performance-анти-паттерны",
     "date": "2026-04-09",

@@ -1,0 +1,163 @@
+{
+  "id": "2026-04-10",
+  "title": "Vue 3: День 26 (новый цикл) — watch vs watchEffect: выбор инструмента, cleanup и устойчивые side effects",
+  "date": "2026-04-10",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "(Повторение) Какой flush у watch обычно нужен, если в callback требуется читать уже обновлённый DOM?",
+      "choices": [
+        { "id": "a", "text": "flush: 'post'" },
+        { "id": "b", "text": "flush: 'pre'" },
+        { "id": "c", "text": "flush: 'sync'" },
+        { "id": "d", "text": "flush не имеет значения" }
+      ],
+      "answer": "a",
+      "explain": "post запускает callback после применения DOM-обновлений текущего цикла рендера."
+    },
+    {
+      "id": "q2",
+      "prompt": "(Повторение) Зачем в async watcher нужен cleanup (onCleanup/onInvalidate)?",
+      "choices": [
+        { "id": "a", "text": "Чтобы отменять/инвалидировать предыдущий async-запуск и не принимать устаревший результат" },
+        { "id": "b", "text": "Чтобы watcher автоматически становился deep" },
+        { "id": "c", "text": "Чтобы TypeScript выводил точный тип ответа" },
+        { "id": "d", "text": "Чтобы callback выполнялся только один раз" }
+      ],
+      "answer": "a",
+      "explain": "Cleanup защищает от гонок, когда медленный старый запрос приходит позже нового."
+    },
+    {
+      "id": "q3",
+      "prompt": "(Повторение) Какой подход чаще снижает риск реактивных циклов effect → mutation → effect?",
+      "choices": [
+        { "id": "a", "text": "Разделять read-model и write-команды, избегать скрытых мутаций в эффектах" },
+        { "id": "b", "text": "Ставить flush: 'sync' всем watcher" },
+        { "id": "c", "text": "Использовать только watchEffect" },
+        { "id": "d", "text": "Переносить логику в template-выражения" }
+      ],
+      "answer": "a",
+      "explain": "Явные границы чтения/записи делают поток изменений предсказуемым и безопасным."
+    },
+    {
+      "id": "q4",
+      "prompt": "В каком случае корректнее выбрать watch вместо watchEffect?",
+      "choices": [
+        { "id": "a", "text": "Когда нужны явные источники и контроль, при каком изменении запускать side effect" },
+        { "id": "b", "text": "Когда нужно автоматическое отслеживание всех зависимостей без явного списка" },
+        { "id": "c", "text": "Когда нужен синхронный пересчёт derived state" },
+        { "id": "d", "text": "Когда нужно кэширование результата" }
+      ],
+      "answer": "a",
+      "explain": "watch лучше для контролируемых бизнес-эффектов с прозрачными триггерами."
+    },
+    {
+      "id": "q5",
+      "prompt": "Что является ключевой особенностью watchEffect?",
+      "choices": [
+        { "id": "a", "text": "Автоматически собирает реактивные зависимости, использованные внутри callback" },
+        { "id": "b", "text": "Работает только с ref, но не с reactive" },
+        { "id": "c", "text": "Гарантированно быстрее watch в любых сценариях" },
+        { "id": "d", "text": "Не поддерживает cleanup" }
+      ],
+      "answer": "a",
+      "explain": "watchEffect трекает все реактивные чтения во время выполнения эффекта."
+    },
+    {
+      "id": "q6",
+      "prompt": "Какой источник watch корректен для отслеживания поля в reactive-объекте?",
+      "choices": [
+        { "id": "a", "text": "watch(() => state.filters.query, callback)" },
+        { "id": "b", "text": "watch(state.filters.query, callback)" },
+        { "id": "c", "text": "watch('state.filters.query', callback)" },
+        { "id": "d", "text": "watch([state], callback, { shallow: true })" }
+      ],
+      "answer": "a",
+      "explain": "Для свойства reactive обычно используют getter, чтобы сохранить реактивную связь."
+    },
+    {
+      "id": "q7",
+      "prompt": "Как правильно описать immediate в watch?",
+      "choices": [
+        { "id": "a", "text": "Callback выполнится сразу при создании watcher и далее при изменениях источника" },
+        { "id": "b", "text": "Watcher станет синхронным эквивалентом computed" },
+        { "id": "c", "text": "Watcher автоматически станет deep" },
+        { "id": "d", "text": "Callback выполнится только один раз" }
+      ],
+      "answer": "a",
+      "explain": "immediate полезен, когда один и тот же код должен отработать на старте и на последующих изменениях."
+    },
+    {
+      "id": "q8",
+      "prompt": "Какой анти-паттерн по архитектуре здесь наиболее критичен?",
+      "choices": [
+        { "id": "a", "text": "Делать HTTP-запрос и мутацию состояния внутри computed" },
+        { "id": "b", "text": "Использовать watch для эффекта" },
+        { "id": "c", "text": "Выносить эффект в composable" },
+        { "id": "d", "text": "Писать типы для входных параметров" }
+      ],
+      "answer": "a",
+      "explain": "computed должен оставаться чистой функцией без side effects."
+    },
+    {
+      "id": "q9",
+      "prompt": "Что предпочтительнее для наблюдения за несколькими независимыми источниками?",
+      "choices": [
+        { "id": "a", "text": "watch([sourceA, sourceB], ([newA, newB]) => ...)" },
+        { "id": "b", "text": "watchEffect(() => sourceA.value, () => sourceB.value)" },
+        { "id": "c", "text": "watch(sourceA && sourceB, cb)" },
+        { "id": "d", "text": "watch('sourceA,sourceB', cb)" }
+      ],
+      "answer": "a",
+      "explain": "Массив источников даёт явный и читаемый контроль нескольких триггеров."
+    },
+    {
+      "id": "q10",
+      "prompt": "В async watch-effect для поиска пользователь быстро меняет query. Что критично добавить?",
+      "choices": [
+        { "id": "a", "text": "Cleanup с отменой/инвалидацией предыдущего запроса" },
+        { "id": "b", "text": "deep: true для всех источников" },
+        { "id": "c", "text": "flush: 'sync' всегда" },
+        { "id": "d", "text": "Перевести логику в computed" }
+      ],
+      "answer": "a",
+      "explain": "Иначе stale-ответ может перезаписать более свежие данные."
+    },
+    {
+      "id": "q11",
+      "prompt": "Какой критерий выбора между watch и watchEffect наиболее зрелый?",
+      "choices": [
+        { "id": "a", "text": "Нужен контроль триггеров и читаемость контракта — watch; нужен быстрый автотрекинг — watchEffect" },
+        { "id": "b", "text": "В TypeScript всегда использовать только watch" },
+        { "id": "c", "text": "watchEffect устарел и не должен применяться" },
+        { "id": "d", "text": "Разницы нет, выбираем случайно" }
+      ],
+      "answer": "a",
+      "explain": "Инструмент выбирают по задаче: контроль и предсказуемость vs скорость прототипирования."
+    },
+    {
+      "id": "q12",
+      "prompt": "Как корректнее остановить watcher при ручном управлении жизненным циклом в composable?",
+      "choices": [
+        { "id": "a", "text": "Сохранить stop-функцию, которую возвращает watch/watchEffect, и вызвать её при teardown" },
+        { "id": "b", "text": "Переопределить ref на null" },
+        { "id": "c", "text": "Удалить callback из памяти через delete" },
+        { "id": "d", "text": "Использовать только onMounted без cleanup" }
+      ],
+      "answer": "a",
+      "explain": "watch/watchEffect возвращают функцию остановки — это стандартный способ контролировать подписку."
+    },
+    {
+      "id": "q13",
+      "prompt": "Какой итоговый принцип по теме дня самый практичный для production-кода?",
+      "choices": [
+        { "id": "a", "text": "Для важных side effects — watch с явными источниками и cleanup; watchEffect — для компактных автотрекаемых эффектов" },
+        { "id": "b", "text": "Всегда заменять watch на watchEffect" },
+        { "id": "c", "text": "Избегать любых watcher в Vue 3" },
+        { "id": "d", "text": "Любой side effect переносить в computed" }
+      ],
+      "answer": "a",
+      "explain": "Это даёт баланс архитектурной прозрачности, устойчивости и удобства разработки."
+    }
+  ]
+}
