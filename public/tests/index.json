@@ -1,5 +1,23 @@
 [
   {
+    "id": "2026-04-16",
+    "title": "Vue 3: День 29 (новый цикл) — Scenario Builder: контракт useScenarioBuilder, границы мутаций и базовый scaffold",
+    "date": "2026-04-16",
+    "path": "/tests/2026-04-16.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "scenario-builder",
+      "composables",
+      "architecture",
+      "state-flow",
+      "mutation-boundaries",
+      "typescript",
+      "mvp"
+    ]
+  },
+  {
     "id": "2026-04-14",
     "title": "Vue 3: День 28 (новый цикл) — watch и watchEffect в async-сценариях: flush, cleanup и контроль гонок",
     "date": "2026-04-14",
