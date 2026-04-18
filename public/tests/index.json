@@ -1,5 +1,23 @@
 [
   {
+    "id": "2026-04-18",
+    "title": "Vue 3: День 31 (новый цикл) — выходной контроль: Scenario Builder, mutation boundaries и диагностика реактивности",
+    "date": "2026-04-18",
+    "path": "/tests/2026-04-18.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "scenario-builder",
+      "mutation-boundaries",
+      "diagnostics",
+      "performance",
+      "computed",
+      "watch",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-04-17",
     "title": "Vue 3: День 30 (новый цикл) — Диагностика реактивности в Scenario Builder: computed-first, контроль side effects и performance-анти-паттерны",
     "date": "2026-04-17",
