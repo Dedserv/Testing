@@ -1,5 +1,23 @@
 [
   {
+    "id": "2026-04-19",
+    "title": "Vue 3: День 32 (новый цикл) — выходное закрепление: Scenario Builder (state-flow, composable contract) и диагностика реактивности",
+    "date": "2026-04-19",
+    "path": "/tests/2026-04-19.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "scenario-builder",
+      "architecture",
+      "state-flow",
+      "composables",
+      "mutation-boundaries",
+      "diagnostics",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-04-18",
     "title": "Vue 3: День 31 (новый цикл) — выходной контроль: Scenario Builder, mutation boundaries и диагностика реактивности",
     "date": "2026-04-18",
