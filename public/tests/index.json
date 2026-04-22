@@ -1,5 +1,23 @@
 [
   {
+    "id": "2026-04-22",
+    "title": "Vue 3: День 33 (новый цикл) — Финальное закрытие блока диагностики реактивности: computed-first, side effects и performance-анти-паттерны",
+    "date": "2026-04-22",
+    "path": "/tests/2026-04-22.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "reactivity",
+      "diagnostics",
+      "performance",
+      "anti-patterns",
+      "computed",
+      "watch",
+      "architecture",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-04-19",
     "title": "Vue 3: День 32 (новый цикл) — выходное закрепление: Scenario Builder (state-flow, composable contract) и диагностика реактивности",
     "date": "2026-04-19",
