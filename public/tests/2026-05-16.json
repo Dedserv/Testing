@@ -1,0 +1,295 @@
+{
+  "id": "2026-05-16",
+  "title": "Vue 3: День 1 (новый цикл) — TypeScript: типы-основа (interface, type, union, intersection, literal, narrowing, discriminated union)",
+  "date": "2026-05-16",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Что из перечисленного НЕ является особенностью интерфейсов (interface) в TypeScript?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Интерфейсы могут быть расширены другими интерфейсами через extends."
+        },
+        {
+          "id": "b",
+          "text": "Интерфейсы поддерживают слияние объявлений (declaration merging)."
+        },
+        {
+          "id": "c",
+          "text": "Интерфейсы могут описывать объединения типов (union types)."
+        },
+        {
+          "id": "d",
+          "text": "Интерфейсы могут быть реализованы классами через implements."
+        }
+      ],
+      "answer": "c",
+      "explain": "Интерфейсы не могут представлять объединения (union) — для этого используются type. Интерфейсы описывают только форму объекта."
+    },
+    {
+      "id": "q2",
+      "prompt": "В контексте Vue 3 Composition API с TypeScript для описания пропсов компонента обычно используют:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "type, потому что пропсы — это простой объект без наследования."
+        },
+        {
+          "id": "b",
+          "text": "interface, потому что он позволяет слияние объявлений при расширении компонента."
+        },
+        {
+          "id": "c",
+          "text": "class, потому что пропсы — это экземпляр класса."
+        },
+        {
+          "id": "d",
+          "text": "enum, для перечисления возможных значений."
+        }
+      ],
+      "answer": "a",
+      "explain": "Для пропсов обычно используют type, так как это простые объектные типы, и нет необходимости в слиянии объявлений или наследовании. Это улучшает читаемость и производительность."
+    },
+    {
+      "id": "q3",
+      "prompt": "Дан код:\n\ntype Status = 'loading' | 'success' | 'error';\nconst current: Status = 'pending';\n\nКакая ошибка возникнет?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Ошибки нет, переменная принимает значение 'pending'."
+        },
+        {
+          "id": "b",
+          "text": "TypeScript выдаст ошибку, так как 'pending' не входит в union-тип Status."
+        },
+        {
+          "id": "c",
+          "text": "Ошибка только во время выполнения (runtime)."
+        },
+        {
+          "id": "d",
+          "text": "TypeScript выдаст предупреждение, но код скомпилируется."
+        }
+      ],
+      "answer": "b",
+      "explain": "Это пример литерального union-типа. Переменная может принимать только значения 'loading', 'success', 'error'. 'pending' недопустим, поэтому TypeScript выдаёт ошибку на этапе компиляции."
+    },
+    {
+      "id": "q4",
+      "prompt": "Что произойдёт при выполнении кода?\n\ntype A = { name: string };\ntype B = { age: number };\ntype C = A & B;\nconst obj: C = { name: 'Иван', age: 25 };",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Ошибка: пересечение типов (intersection) не допускает объединение полей."
+        },
+        {
+          "id": "b",
+          "text": "Объект будет содержать все поля из A и B — тип C корректно объединяет их."
+        },
+        {
+          "id": "c",
+          "text": "Тип C будет иметь только поле age, так как & — это пересечение, а не объединение."
+        },
+        {
+          "id": "d",
+          "text": "Тип C будет пустым, так как A и B не пересекаются."
+        }
+      ],
+      "answer": "b",
+      "explain": "Оператор & (intersection) создаёт тип, содержащий все свойства обоих типов. В данном случае obj должен иметь и name, и age — код корректен."
+    },
+    {
+      "id": "q5",
+      "prompt": "Какой тип будет у переменной result после сужения (narrowing) в коде:\n\nfunction handle(value: string | number) {\n  if (typeof value === 'string') {\n    // здесь value имеет тип:\n    return value.toUpperCase();\n  }\n  // здесь value имеет тип:\n  return value.toFixed(2);\n}",
+      "choices": [
+        {
+          "id": "a",
+          "text": "В if — string, после if — number."
+        },
+        {
+          "id": "b",
+          "text": "В if — string, после if — string | number."
+        },
+        {
+          "id": "c",
+          "text": "В if — string | number, после if — string | number."
+        },
+        {
+          "id": "d",
+          "text": "В if — never, после if — number."
+        }
+      ],
+      "answer": "a",
+      "explain": "Благодаря typeof-проверке TypeScript сужает тип: внутри блока if value точно string, после — number, так как мы уже отсекли строку."
+    },
+    {
+      "id": "q6",
+      "prompt": "Что такое discriminated union (различающееся объединение) в TypeScript?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Объединение типов, имеющих общее поле с литеральным типом (дискриминант), позволяющее TypeScript сужать типы при проверке этого поля."
+        },
+        {
+          "id": "b",
+          "text": "Объединение типов, которые пересекаются (intersection), и для выбора нужного используется switch."
+        },
+        {
+          "id": "c",
+          "text": "Тип, который автоматически определяет разницу между переданными значениями."
+        },
+        {
+          "id": "d",
+          "text": "Тип, используемый только в Vue для дискриминации пропсов."
+        }
+      ],
+      "answer": "a",
+      "explain": "Discriminated union — это union типов, где каждый тип содержит одно и то же поле (дискриминант) с уникальным литеральным значением. TypeScript использует его для точного сужения типа при проверке (например, в switch)."
+    },
+    {
+      "id": "q7",
+      "prompt": "Дан discriminated union:\n\ntype Shape = \n  | { kind: 'circle'; radius: number }\n  | { kind: 'square'; side: number }\n  | { kind: 'triangle'; base: number; height: number };\n\nЧто произойдёт в коде?\n\nfunction area(s: Shape) {\n  switch (s.kind) {\n    case 'circle': return Math.PI * s.radius ** 2;\n    case 'square': return s.side * s.side;\n    default: return 0;\n  }\n}",
+      "choices": [
+        {
+          "id": "a",
+          "text": "TypeScript выдаёт ошибку, потому что в default не обработан 'triangle'."
+        },
+        {
+          "id": "b",
+          "text": "Код выполняется без ошибок, но тип s в default — never, так как все случаи покрыты."
+        },
+        {
+          "id": "c",
+          "text": "Ошибка: s.kind не может быть использован в switch, так как это discriminated union."
+        },
+        {
+          "id": "d",
+          "text": "Код работает, но в default s имеет тип 'triangle', если он не обработан."
+        }
+      ],
+      "answer": "b",
+      "explain": "После обработки 'circle' и 'square' остаётся только 'triangle'. Однако он не обработан явно, поэтому в default TypeScript сужает s до never (исчерпывающая проверка). Ошибки нет, но лучше добавить case для 'triangle' или использовать never для полноты."
+    },
+    {
+      "id": "q8",
+      "prompt": "Какое утверждение верно? Интерфейсы (interface) в TypeScript:",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Могут быть переопределены после создания (declaration merging)."
+        },
+        {
+          "id": "b",
+          "text": "Не могут быть использованы с дженериками (generics)."
+        },
+        {
+          "id": "c",
+          "text": "Не могут описывать типы функций."
+        },
+        {
+          "id": "d",
+          "text": "Обязательно должны быть реализованы классом."
+        }
+      ],
+      "answer": "a",
+      "explain": "Одно из ключевых отличий интерфейсов — они поддерживают слияние объявлений: можно объявить интерфейс с тем же именем несколько раз, и TypeScript объединит их. Type такого не позволяет."
+    },
+    {
+      "id": "q9",
+      "prompt": "Дан код:\n\ninterface User {\n  name: string;\n}\n\ninterface User {\n  age: number;\n}\n\nconst user: User = { name: 'Анна', age: 30 };\n\nЧто произойдёт?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Ошибка: два интерфейса с одинаковым именем недопустимы."
+        },
+        {
+          "id": "b",
+          "text": "Второе объявление перезапишет первое, и у User останется только age."
+        },
+        {
+          "id": "c",
+          "text": "TypeScript автоматически объединит оба интерфейса — User будет иметь name и age."
+        },
+        {
+          "id": "d",
+          "text": "Код скомпилируется, но user будет содержать только name."
+        }
+      ],
+      "answer": "c",
+      "explain": "Интерфейсы поддерживают declaration merging — при повторном объявлении с тем же именем свойства добавляются. Поэтому User получает оба поля."
+    },
+    {
+      "id": "q10",
+      "prompt": "Какой тип получится в результате:\n\ntype A = string | number;\ntype B = A & boolean;",
+      "choices": [
+        {
+          "id": "a",
+          "text": "string | number | boolean"
+        },
+        {
+          "id": "b",
+          "text": "never"
+        },
+        {
+          "id": "c",
+          "text": "boolean"
+        },
+        {
+          "id": "d",
+          "text": "string & number & boolean"
+        }
+      ],
+      "answer": "b",
+      "explain": "Пересечение (intersection) типа string | number с boolean даёт never, так как ни string, ни number не могут одновременно быть boolean. Пересечение типов, не имеющих общих значений, — never."
+    },
+    {
+      "id": "q11",
+      "prompt": "В Vue 3 с TypeScript для описания типа вычисляемого свойства (computed), которое может возвращать строку или число, какой синтаксис правильный?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "const result = computed<string | number>(() => { ... });"
+        },
+        {
+          "id": "b",
+          "text": "const result = computed(() => { ... }): string | number;"
+        },
+        {
+          "id": "c",
+          "text": "const result: string | number = computed(() => { ... });"
+        },
+        {
+          "id": "d",
+          "text": "const result = computed(() => { ... }); // тип выводится автоматически"
+        }
+      ],
+      "answer": "a",
+      "explain": "Для явного указания типа возвращаемого значения computed используется дженерик: computed<string | number>(...). Это гарантирует, что TypeScript будет знать точный тип."
+    },
+    {
+      "id": "q12",
+      "prompt": "Дан discriminated union:\n\ntype Event =\n  | { type: 'CLICK'; x: number; y: number }\n  | { type: 'KEYPRESS'; key: string }\n  | { type: 'FOCUS' };\n\nfunction handleEvent(e: Event) {\n  if (e.type === 'CLICK') {\n    console.log(e.x, e.y);\n  } else if (e.type === 'KEYPRESS') {\n    console.log(e.key);\n  } else {\n    // Здесь тип e сужается до:\n  }\n}\n\nКаким будет тип e в else?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Event (без сужения)"
+        },
+        {
+          "id": "b",
+          "text": "{ type: 'FOCUS' }"
+        },
+        {
+          "id": "c",
+          "text": "never"
+        },
+        {
+          "id": "d",
+          "text": "Event | undefined"
+        }
+      ],
+      "answer": "b",
+      "explain": "После проверки type === 'CLICK' и type === 'KEYPRESS' остаётся только вариант { type: 'FOCUS' }. TypeScript автоматически сужает тип в else до оставшегося варианта."
+    }
+  ]
+}
