@@ -1,5 +1,15 @@
 [
   {
+    "id": "2026-05-18",
+    "title": "Vue 3: Feature-based vs Layer-based structure",
+    "date": "2026-05-18",
+    "path": "/tests/2026-05-18.json",
+    "tags": [
+      "vue",
+      "vue3"
+    ]
+  },
+  {
     "id": "2026-05-16",
     "title": "Vue 3: День 1 (новый цикл) — TypeScript: типы-основа (interface, type, union, intersection, literal, narrowing, discriminated union)",
     "date": "2026-05-16",
