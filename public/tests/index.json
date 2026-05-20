@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-05-16",
+    "title": "Vue 3: День 1 (новый цикл) — TypeScript: типы-основа (interface, type, union, intersection, literal, narrowing, discriminated union)",
+    "date": "2026-05-16",
+    "path": "/tests/2026-05-16.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-04-22",
     "title": "Vue 3: День 33 (новый цикл) — Финальное закрытие блока диагностики реактивности: computed-first, side effects и performance-анти-паттерны",
     "date": "2026-04-22",
