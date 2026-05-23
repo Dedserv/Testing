@@ -1,0 +1,295 @@
+{
+  "id": "2026-05-23",
+  "title": "Vue 3: TypeScript: Generics (базовый синтаксис, constrained generics)",
+  "date": "2026-05-23",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Что такое generic в TypeScript?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Способ объявить переменную, которая может принимать любое значение"
+        },
+        {
+          "id": "b",
+          "text": "Механизм для создания компонентов, работающих с разными типами данных, сохраняя информацию о типе при использовании"
+        },
+        {
+          "id": "c",
+          "text": "Тип, который автоматически определяется во время выполнения"
+        },
+        {
+          "id": "d",
+          "text": "Специальный синтаксис для работы с массивами"
+        }
+      ],
+      "answer": "b",
+      "explain": "Generic позволяют писать функции, классы и интерфейсы, которые работают с любым типом, но при этом сохраняют информацию о конкретном типе на этапе компиляции."
+    },
+    {
+      "id": "q2",
+      "prompt": "Дан код:\n\nfunction first<T>(arr: T[]): T { return arr[0] }\nconst x = first([1, 'hello'])\n\nКакой тип будет у переменной x?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "number"
+        },
+        {
+          "id": "b",
+          "text": "string"
+        },
+        {
+          "id": "c",
+          "text": "number | string"
+        },
+        {
+          "id": "d",
+          "text": "any"
+        }
+      ],
+      "answer": "c",
+      "explain": "TypeScript выводит T как объединение типов элементов массива, так как массив содержит number и string, T = number | string."
+    },
+    {
+      "id": "q3",
+      "prompt": "Дан generic с ограничением:\n\nfunction update<T extends { id: number }>(item: T): T { return item }\n\nКакой из вызовов вызовет ошибку компиляции?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "update({ id: 1, name: 'John' })"
+        },
+        {
+          "id": "b",
+          "text": "update({ id: 2, age: 30 })"
+        },
+        {
+          "id": "c",
+          "text": "update({ id: 'abc', name: 'Jane' })"
+        },
+        {
+          "id": "d",
+          "text": "update({ id: 10 })"
+        }
+      ],
+      "answer": "c",
+      "explain": "Ограничение T extends { id: number } требует, чтобы id был типа number. В варианте c id — строка, поэтому TypeScript выдаёт ошибку."
+    },
+    {
+      "id": "q4",
+      "prompt": "Для чего используется ограничение `extends` в generic?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Чтобы указать, что тип параметра наследуется от другого класса"
+        },
+        {
+          "id": "b",
+          "text": "Чтобы разрешить только определённые типы в качестве аргумента generic"
+        },
+        {
+          "id": "c",
+          "text": "Чтобы сделать generic необязательным"
+        },
+        {
+          "id": "d",
+          "text": "Чтобы TypeScript автоматически выводил тип"
+        }
+      ],
+      "answer": "b",
+      "explain": "Конструкция T extends SomeType ограничивает возможные типы T только теми, которые соответствуют SomeType, позволяя безопасно использовать свойства этого типа."
+    },
+    {
+      "id": "q5",
+      "prompt": "Дан generic интерфейс:\n\ninterface ApiResponse<T> {\n  data: T\n  status: number\n  message: string\n}\n\nКакая из следующих записей определяет тип ответа, содержащего массив пользователей?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "type UserResponse = ApiResponse<User>"
+        },
+        {
+          "id": "b",
+          "text": "type UserResponse = ApiResponse<User[]>"
+        },
+        {
+          "id": "c",
+          "text": "type UserResponse = ApiResponse<Array<User>>"
+        },
+        {
+          "id": "d",
+          "text": "type UserResponse = ApiResponse<User>[]"
+        }
+      ],
+      "answer": "b",
+      "explain": "ApiResponse<User[]> означает, что data будет иметь тип User[]. Вариант c также корректен, но в задании просят один ответ, и b — наиболее распространённая запись."
+    },
+    {
+      "id": "q6",
+      "prompt": "Дан код:\n\nfunction getValue<T, K extends keyof T>(obj: T, key: K): T[K] {\n  return obj[key]\n}\n\nconst obj = { a: 1, b: 'hello', c: true }\nconst val = getValue(obj, 'b')\n\nКакой тип у переменной val?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "number"
+        },
+        {
+          "id": "b",
+          "text": "string"
+        },
+        {
+          "id": "c",
+          "text": "boolean"
+        },
+        {
+          "id": "d",
+          "text": "string | number | boolean"
+        }
+      ],
+      "answer": "b",
+      "explain": "K расширяет keyof T, поэтому key = 'b' — из ключей obj, T['b'] имеет тип string. TypeScript выводит T[K] как string."
+    },
+    {
+      "id": "q7",
+      "prompt": "В чём основное преимущество использования generic в composable useFetch по сравнению с использованием `any`?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Уменьшается размер кода"
+        },
+        {
+          "id": "b",
+          "text": "Ускоряется выполнение запроса"
+        },
+        {
+          "id": "c",
+          "text": "TypeScript знает точный тип возвращаемых данных, что предотвращает ошибки типов в дальнейшем использовании"
+        },
+        {
+          "id": "d",
+          "text": "Позволяет использовать composable только с одним типом данных"
+        }
+      ],
+      "answer": "c",
+      "explain": "Generic сохраняет информацию о типе данных, которые возвращает fetch. Без него data имело бы тип any, и TypeScript не мог бы проверять корректность доступа к полям."
+    },
+    {
+      "id": "q8",
+      "prompt": "Дан generic тип:\n\ntype Nullable<T> = T | null\n\nКаким будет тип переменной x, объявленной как `Nullable<string>`?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "string"
+        },
+        {
+          "id": "b",
+          "text": "null"
+        },
+        {
+          "id": "c",
+          "text": "string | null"
+        },
+        {
+          "id": "d",
+          "text": "string | undefined"
+        }
+      ],
+      "answer": "c",
+      "explain": "Nullable<string> подставляет T = string, получаем string | null."
+    },
+    {
+      "id": "q9",
+      "prompt": "Дан composable:\n\ninterface HasId { id: string | number }\nfunction useList<T extends HasId>(fetchFn: () => Promise<T[]>) { ... }\n\nЧто произойдёт, если попытаться вызвать useList с типом, который не содержит поле id?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Будет ошибка во время выполнения"
+        },
+        {
+          "id": "b",
+          "text": "TypeScript выдаст ошибку компиляции"
+        },
+        {
+          "id": "c",
+          "text": "Функция вернёт any"
+        },
+        {
+          "id": "d",
+          "text": "Поле id будет автоматически добавлено"
+        }
+      ],
+      "answer": "b",
+      "explain": "Ограничение T extends HasId проверяется на этапе компиляции. Если тип не соответствует, TypeScript выдаёт ошибку, что предотвращает неправильное использование."
+    },
+    {
+      "id": "q10",
+      "prompt": "Дан код:\n\nfunction createCache<T = string>() {\n  const store = new Map<string, T>()\n  return { get(key: string) { return store.get(key) }, set(key: string, value: T) { store.set(key, value) } }\n}\n\nconst cache = createCache()\ncache.set('key', 42)\n\nБудет ли ошибка компиляции?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Нет, всё корректно"
+        },
+        {
+          "id": "b",
+          "text": "Да, потому что T по умолчанию string, а передаётся number"
+        },
+        {
+          "id": "c",
+          "text": "Да, потому что createCache() не указан generic"
+        },
+        {
+          "id": "d",
+          "text": "Нет, так как TypeScript выведет T как number"
+        }
+      ],
+      "answer": "b",
+      "explain": "Параметр T по умолчанию — string. При вызове createCache() без аргумента generic T = string. Метод set ожидает значение типа string, а передаётся number — ошибка компиляции."
+    },
+    {
+      "id": "q11",
+      "prompt": "Зачем нужен параметр типа по умолчанию (default type parameter) в generic?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Чтобы можно было не указывать тип при вызове, если тип не важен"
+        },
+        {
+          "id": "b",
+          "text": "Чтобы ограничить возможные типы, которые можно передать"
+        },
+        {
+          "id": "c",
+          "text": "Чтобы TypeScript автоматически выводил тип"
+        },
+        {
+          "id": "d",
+          "text": "Чтобы увеличить производительность компиляции"
+        }
+      ],
+      "answer": "a",
+      "explain": "Параметр по умолчанию позволяет вызывать функцию без указания типа, при этом используется заданный тип. Это удобно для часто используемых generic с одним основным типом."
+    },
+    {
+      "id": "q12",
+      "prompt": "Какой generic constraint нужно использовать для функции, которая принимает объект и возвращает строку, являющуюся одним из его ключей?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "T extends object"
+        },
+        {
+          "id": "b",
+          "text": "K extends keyof T"
+        },
+        {
+          "id": "c",
+          "text": "T extends keyof K"
+        },
+        {
+          "id": "d",
+          "text": "T extends any"
+        }
+      ],
+      "answer": "b",
+      "explain": "Чтобы параметр K был ключом объекта T, нужно использовать ограничение K extends keyof T. Это позволяет безопасно обращаться к свойствам объекта по ключу."
+    }
+  ]
+}
