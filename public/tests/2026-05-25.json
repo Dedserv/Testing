@@ -1,0 +1,271 @@
+{
+  "id": "2026-05-25",
+  "title": "Анатомия идеального composable: контракт, типизация, документация",
+  "date": "2026-05-25",
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Какое имя лучше всего подходит для composable, реализующего функциональность показа/скрытия модального окна?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "useModalVisibility"
+        },
+        {
+          "id": "b",
+          "text": "useToggleModal"
+        },
+        {
+          "id": "c",
+          "text": "modalToggle"
+        },
+        {
+          "id": "d",
+          "text": "useOpenClose"
+        }
+      ],
+      "answer": "b",
+      "explain": "Согласно правилам именования, composable должен начинаться с use и содержать глагол + объект. useToggleModal (глагол toggle + объект modal) точно описывает назначение. useModalVisibility — допустимо, но менее лаконично. modalToggle — без префикса use, не соответствует стандарту. useOpenClose — глаголы не отражают переключение."
+    },
+    {
+      "id": "q2",
+      "prompt": "Какой из перечисленных вариантов возврата из composable является правильным (следует рекомендациям)?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "return { items: readonly(items), loading: readonly(loading) }"
+        },
+        {
+          "id": "b",
+          "text": "return ref({ items, loading })"
+        },
+        {
+          "id": "c",
+          "text": "return reactive({ items, loading })"
+        },
+        {
+          "id": "d",
+          "text": "return { items, loading }"
+        }
+      ],
+      "answer": "a",
+      "explain": "Идеальный composable возвращает плоский объект, а ref'ы оборачивает в readonly для защиты от внешних мутаций. Вариант a именно это и делает. Вариант b возвращает ref<объект> — теряется реактивность полей при деструктуризации, плохо тестируется. Вариант c — reactive, но всё равно объект, а не плоский. Вариант d — нет readonly, внешний код может изменить состояние в обход логики."
+    },
+    {
+      "id": "q3",
+      "prompt": "Зачем в composable использовать readonly при возврате ref'ов?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Чтобы увеличить производительность за счёт глубокой заморозки"
+        },
+        {
+          "id": "b",
+          "text": "Чтобы запретить внешнему коду напрямую изменять состояние в обход методов composable"
+        },
+        {
+          "id": "c",
+          "text": "Чтобы сделать ref'ы иммутабельными для TypeScript strict mode"
+        },
+        {
+          "id": "d",
+          "text": "Чтобы Vue автоматически перерисовывал компонент при любом изменении"
+        }
+      ],
+      "answer": "b",
+      "explain": "readonly создаёт прокси, который перехватывает операции записи и предотвращает их (в dev-режиме предупреждает). Это гарантирует, что внешний код не сможет изменить items.value.push(...) или loading.value = true, и любые изменения происходят только через методы, предоставленные composable. Варианты a, c, d неверны: readonly не увеличивает производительность, не обязателен для strict mode и не влияет на перерисовку."
+    },
+    {
+      "id": "q4",
+      "prompt": "Как правильно обрабатывать ошибку в composable useFetch?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "throw new Error('Ошибка загрузки') внутри fetch"
+        },
+        {
+          "id": "b",
+          "text": "Возвращать поле error: Ref<Error | null> и записывать туда ошибку"
+        },
+        {
+          "id": "c",
+          "text": "Использовать try/catch и ничего не возвращать, положиться на глобальный обработчик"
+        },
+        {
+          "id": "d",
+          "text": "Вызывать onUnmounted с передачей ошибки через emit"
+        }
+      ],
+      "answer": "b",
+      "explain": "Рекомендуется возвращать ошибку как реактивное состояние (error: Ref<Error | null>), чтобы компонент мог предсказуемо отреагировать (показать сообщение, повторить запрос). Бросать исключения (вариант a) непредсказуемо — компонент не сможет обработать её декларативно. Вариант c — потеря информации. Вариант d — нестандартный и нарушает чистоту composable."
+    },
+    {
+      "id": "q5",
+      "prompt": "Какой элемент НЕ является частью «анатомии идеального composable»?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "JSDoc с @param, @returns, @example"
+        },
+        {
+          "id": "b",
+          "text": "Явный return type (type alias)"
+        },
+        {
+          "id": "c",
+          "text": "Использование provide/inject для передачи состояния"
+        },
+        {
+          "id": "d",
+          "text": "Cleanup через onUnmounted или watch cleanup"
+        }
+      ],
+      "answer": "c",
+      "explain": "provide/inject — это механизм передачи данных между компонентами, а не составная часть самого composable. Composable может использовать provide/inject, но это не обязательный элемент его контракта. Остальные пункты (JSDoc, явная типизация, cleanup) входят в описание идеального composable."
+    },
+    {
+      "id": "q6",
+      "prompt": "Дан легаси-код:\n\nexport function toggle(defaultValue = false) {\n  const state = ref(defaultValue);\n  const toggle = () => (state.value = !state.value);\n  const setTrue = () => (state.value = true);\n  return {state, toggle, setTrue};\n}\n\nКакие изменения нужно внести, чтобы привести к стандарту идеального composable?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Переименовать в useToggle, добавить JSDoc, readonly для state, добавить setFalse, явный return type"
+        },
+        {
+          "id": "b",
+          "text": "Добавить readonly, изменить export function на export const"
+        },
+        {
+          "id": "c",
+          "text": "Переименовать в useToggle, не менять возвращаемые поля"
+        },
+        {
+          "id": "d",
+          "text": "Убрать параметр по умолчанию, добавить onUnmounted"
+        }
+      ],
+      "answer": "a",
+      "explain": "В задании указано: переименовать в useToggle, добавить JSDoc, явный return type UseToggleReturn, readonly для state, добавить метод setFalse. Вариант b недостаточен — нет JSDoc и setFalse. Вариант c не добавляет readonly и тип. Вариант d не добавляет нужных изменений и не исправляет имя."
+    },
+    {
+      "id": "q7",
+      "prompt": "В composable useCountdown обнаружен баг: если вызвать start() дважды подряд, создаётся второй интервал. Как правильнее всего исправить?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "В начале start() проверить running.value и если true — return"
+        },
+        {
+          "id": "b",
+          "text": "В start() очищать старый интервал перед созданием нового"
+        },
+        {
+          "id": "c",
+          "text": "Сделать интервал ref<number | undefined> и обнулять в stop()"
+        },
+        {
+          "id": "d",
+          "text": "Использовать setTimeout вместо setInterval"
+        }
+      ],
+      "answer": "a",
+      "explain": "Наиболее прямой способ: если running уже true, не запускать новый интервал. Это предотвращает дублирование. Вариант b тоже сработает, но менее эффективно (очищать каждый раз). Вариант c не решает проблему создания второго интервала. Вариант d меняет логику и не решает проблему ручного двойного вызова."
+    },
+    {
+      "id": "q8",
+      "prompt": "Какой тип возврата должен иметь composable useDebounce<T>?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "{ value: Ref<T>, debounced: Ref<T>, flush: () => void }"
+        },
+        {
+          "id": "b",
+          "text": "{ value: Ref<T>, debounced: Readonly<Ref<T>>, flush: () => void }"
+        },
+        {
+          "id": "c",
+          "text": "{ value: Ref<T>, debounced: DeepReadonly<Ref<T>>, flush: () => void }"
+        },
+        {
+          "id": "d",
+          "text": "{ value: T, debounced: T, flush: () => void }"
+        }
+      ],
+      "answer": "b",
+      "explain": "Согласно заданию, value — мутабельное (для v-model), debounced — только для чтения, поэтому readonly. Так как debounced сам по себе ref, Readonly<Ref<T>> достаточно (глубинная readonly не обязательна, если внутри примитив). Вариант a не readonly. Вариант c избыточен (DeepReadonly не нужен для Ref с примитивом). Вариант d нереактивные значения — неправильно."
+    },
+    {
+      "id": "q9",
+      "prompt": "Что возвращает метод on() в composable useEventBus<T>?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "void"
+        },
+        {
+          "id": "b",
+          "text": "количество подписчиков"
+        },
+        {
+          "id": "c",
+          "text": "функцию отписки () => void"
+        },
+        {
+          "id": "d",
+          "text": "ID подписки для последующего off"
+        }
+      ],
+      "answer": "c",
+      "explain": "В задании указано: on(handler: (data: T) => void): () => void — возвращает функцию, вызов которой отписывает данный обработчик. Это удобно для автоматической отписки в setup. Варианты a, b, d не соответствуют спецификации."
+    },
+    {
+      "id": "q10",
+      "prompt": "Какой из следующих примеров JSDoc для composable useList является наиболее полным и соответствующим стандарту?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "/** Управляет списком */\nfunction useList<T>(fetchFn: () => Promise<T[]>, options?: {debounceMs?: number})"
+        },
+        {
+          "id": "b",
+          "text": "/**\n * Управляет списком сущностей с фильтрацией.\n * @param fetchFn — функция загрузки данных\n * @param options.debounceMs — задержка фильтрации\n * @returns Реактивное состояние списка\n * @example\n * const { items, loading } = useList(() => api.getUsers())\n */"
+        },
+        {
+          "id": "c",
+          "text": "/**\n * @param fetchFn\n * @param options\n * @returns {items, loading, error, refresh}\n */"
+        },
+        {
+          "id": "d",
+          "text": "/*\n * useList — composable для работы со списком\n * Использование: внутри setup\n */"
+        }
+      ],
+      "answer": "b",
+      "explain": "Идеальный JSDoc должен содержать описание, @param с пояснением, @returns с описанием, @example с реальным кодом. Вариант b удовлетворяет всем требованиям. Вариант a слишком краткий, нет @param и @example. Вариант c нет описания и example. Вариант d использует многострочный комментарий (не JSDoc), нет структуры."
+    },
+    {
+      "id": "q11",
+      "prompt": "Почему в composable для работы с массивами рекомендуется использовать shallowRef вместо ref?",
+      "choices": [
+        {
+          "id": "a",
+          "text": "Потому что ref не может хранить массивы"
+        },
+        {
+          "id": "b",
+          "text": "Чтобы избежать глубокого реактивного отслеживания каждого элемента массива, что экономит память и ресурсы"
+        },
+        {
+          "id": "c",
+          "text": "Чтобы массив автоматически очищался при unmount"
+        },
+        {
+          "id": "d",
+          "text": "Чтобы при замене массива Vue не перерисовывал компонент"
+        }
+      ],
+      "answer": "b",
+      "explain": "shallowRef создаёт реактивность только на уровне замены самого значения, а не глубокого обхода элементов. Для массивов, которые часто обновляются целиком (например, из API), это значительно дешевле, чем ref, который делает глубокую реактивность на каждый элемент. Варианты a, c, d неверны."
+    }
+  ]
+}

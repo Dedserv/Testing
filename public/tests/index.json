@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-05-25",
+    "title": "Анатомия идеального composable: контракт, типизация, документация",
+    "date": "2026-05-25",
+    "path": "/tests/2026-05-25.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "composables"
+    ]
+  },
+  {
     "id": "2026-05-23",
     "title": "Vue 3: TypeScript: Generics (базовый синтаксис, constrained generics)",
     "date": "2026-05-23",
