@@ -1,5 +1,15 @@
 [
   {
+    "id": "2026-05-28",
+    "title": "Vue 3: Presentation vs Container (Smart/Dumb)",
+    "date": "2026-05-28",
+    "path": "/tests/2026-05-28.json",
+    "tags": [
+      "vue",
+      "vue3"
+    ]
+  },
+  {
     "id": "2026-05-25",
     "title": "Анатомия идеального composable: контракт, типизация, документация",
     "date": "2026-05-25",
