@@ -1,5 +1,15 @@
 [
   {
+    "id": "2026-06-02",
+    "title": "Vue 3: Слои приложения (UI → Feature → Domain → Data)",
+    "date": "2026-06-02",
+    "path": "/tests/2026-06-02.json",
+    "tags": [
+      "vue",
+      "vue3"
+    ]
+  },
+  {
     "id": "2026-05-28",
     "title": "Vue 3: Presentation vs Container (Smart/Dumb)",
     "date": "2026-05-28",
