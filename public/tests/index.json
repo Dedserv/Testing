@@ -1,5 +1,16 @@
 [
   {
+    "id": "2026-06-26",
+    "title": "Vue 3: Renderless Components",
+    "date": "2026-06-26",
+    "path": "/tests/2026-06-26.json",
+    "tags": [
+      "vue",
+      "vue3",
+      "typescript"
+    ]
+  },
+  {
     "id": "2026-06-17",
     "title": "Vue 3: Renderless Components",
     "date": "2026-06-17",
